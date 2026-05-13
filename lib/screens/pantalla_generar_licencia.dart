@@ -6,38 +6,32 @@ class PantallaGenerarLicencia extends StatefulWidget {
   const PantallaGenerarLicencia({super.key});
 
   @override
-  State<PantallaGenerarLicencia> createState() =>
-      _PantallaGenerarLicenciaState();
+  State<PantallaGenerarLicencia> createState() => _PantallaGenerarLicenciaState();
 }
 
-class _PantallaGenerarLicenciaState
-    extends State<PantallaGenerarLicencia> {
+class _PantallaGenerarLicenciaState extends State<PantallaGenerarLicencia> {
   final _deviceIdCtrl = TextEditingController();
   String _codigoGenerado = '';
   String _claveCtrl = '';
-  // ⚠️ Clave secreta de desarrollador — CÁMBIALA
-  static const String _claveDesarrollador = 'DEV2024';
+  static const String _claveDesarrollador = 'BillarDev2025';
 
   void _generar() {
     if (_claveCtrl != _claveDesarrollador) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('❌ Clave de desarrollador incorrecta'),
+          content: Text('Clave de desarrollador incorrecta'),
           backgroundColor: Colors.red,
         ),
       );
       return;
     }
-
     if (_deviceIdCtrl.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Ingresa el Device ID del cliente')),
       );
       return;
     }
-
-    LicenciaService.generarCodigo(_deviceIdCtrl.text.trim())
-        .then((codigo) {
+    LicenciaService.generarCodigo(_deviceIdCtrl.text.trim()).then((codigo) {
       setState(() => _codigoGenerado = codigo);
     });
   }
@@ -46,7 +40,7 @@ class _PantallaGenerarLicenciaState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('🔑 Generador de Licencias'),
+        title: const Text('Generador de Licencias'),
         backgroundColor: Colors.black,
       ),
       backgroundColor: Colors.black,
@@ -57,21 +51,13 @@ class _PantallaGenerarLicenciaState
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                '⚠️ PANEL DE DESARROLLADOR',
-                style: TextStyle(
-                    color: Colors.amber,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
-              ),
+              const Text('PANEL DE DESARROLLADOR',
+                  style: TextStyle(
+                      color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 18)),
               const SizedBox(height: 8),
-              const Text(
-                'Solo para uso interno. No compartas esta pantalla.',
-                style: TextStyle(color: Colors.grey, fontSize: 13),
-              ),
+              const Text('Solo para uso interno. No compartas esta pantalla.',
+                  style: TextStyle(color: Colors.grey, fontSize: 13)),
               const SizedBox(height: 32),
-
-              // Clave de desarrollador
               TextField(
                 obscureText: true,
                 decoration: const InputDecoration(
@@ -82,25 +68,22 @@ class _PantallaGenerarLicenciaState
                 onChanged: (v) => _claveCtrl = v,
               ),
               const SizedBox(height: 16),
-
-              // Device ID del cliente
               TextField(
                 controller: _deviceIdCtrl,
                 decoration: const InputDecoration(
                   labelText: 'Device ID del cliente',
-                  hintText: 'El cliente te lo envía desde la app',
+                  hintText: 'El cliente te lo envia desde la app',
                   prefixIcon: Icon(Icons.phone_android),
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 20),
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: _generar,
                   icon: const Icon(Icons.key),
-                  label: const Text('Generar Código de Licencia'),
+                  label: const Text('Generar Codigo de Licencia'),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     backgroundColor: Colors.amber[700],
@@ -108,14 +91,11 @@ class _PantallaGenerarLicenciaState
                   ),
                 ),
               ),
-
-              // Resultado
               if (_codigoGenerado.isNotEmpty) ...[
                 const SizedBox(height: 28),
                 const Divider(),
                 const SizedBox(height: 16),
-                const Text('Código generado:',
-                    style: TextStyle(color: Colors.grey)),
+                const Text('Codigo generado:', style: TextStyle(color: Colors.grey)),
                 const SizedBox(height: 12),
                 Container(
                   padding: const EdgeInsets.all(16),
@@ -140,25 +120,23 @@ class _PantallaGenerarLicenciaState
                       const SizedBox(height: 12),
                       ElevatedButton.icon(
                         onPressed: () {
-                          Clipboard.setData(
-                              ClipboardData(text: _codigoGenerado));
+                          Clipboard.setData(ClipboardData(text: _codigoGenerado));
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content:
-                                  Text('✅ Código copiado al portapapeles'),
+                              content: Text('Codigo copiado al portapapeles'),
                               backgroundColor: Colors.green,
                             ),
                           );
                         },
                         icon: const Icon(Icons.copy),
-                        label: const Text('Copiar código'),
+                        label: const Text('Copiar codigo'),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 16),
                 const Text(
-                  'Envía este código al cliente por WhatsApp o email.\nEs válido ÚNICAMENTE para su dispositivo.',
+                  'Envia este codigo al cliente por WhatsApp o email.\nEs valido UNICAMENTE para su dispositivo.',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey, fontSize: 13),
                 ),

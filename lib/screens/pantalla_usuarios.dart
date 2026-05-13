@@ -21,10 +21,7 @@ class _PantallaUsuariosState extends State<PantallaUsuarios> {
 
   Future<void> _cargar() async {
     final ops = await DatabaseService.obtenerOperadores();
-    setState(() {
-      _operadores = ops;
-      _cargando = false;
-    });
+    setState(() { _operadores = ops; _cargando = false; });
   }
 
   void _mostrarDialogCrear() {
@@ -37,7 +34,7 @@ class _PantallaUsuariosState extends State<PantallaUsuarios> {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setDialog) => AlertDialog(
-          title: const Text('👤 Nuevo Operador'),
+          title: const Text('Nuevo Operador'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -57,7 +54,7 @@ class _PantallaUsuariosState extends State<PantallaUsuarios> {
                 obscureText: true,
                 maxLength: 6,
                 decoration: const InputDecoration(
-                  labelText: 'PIN (4-6 dígitos)',
+                  labelText: 'PIN (4-6 digitos)',
                   prefixIcon: Icon(Icons.lock),
                   border: OutlineInputBorder(),
                 ),
@@ -78,26 +75,14 @@ class _PantallaUsuariosState extends State<PantallaUsuarios> {
             ],
           ),
           actions: [
-            TextButton(
-                onPressed: () => Navigator.pop(ctx),
-                child: const Text('Cancelar')),
+            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancelar')),
             ElevatedButton(
               onPressed: () async {
-                if (nombreCtrl.text.trim().isEmpty) {
-                  setDialog(() => error = 'Ingresa un nombre');
-                  return;
-                }
-                if (pinCtrl.text.length < 4) {
-                  setDialog(() => error = 'PIN mínimo 4 dígitos');
-                  return;
-                }
-                if (pinCtrl.text != pin2Ctrl.text) {
-                  setDialog(() => error = 'Los PINs no coinciden');
-                  return;
-                }
+                if (nombreCtrl.text.trim().isEmpty) { setDialog(() => error = 'Ingresa un nombre'); return; }
+                if (pinCtrl.text.length < 4) { setDialog(() => error = 'PIN minimo 4 digitos'); return; }
+                if (pinCtrl.text != pin2Ctrl.text) { setDialog(() => error = 'Los PINs no coinciden'); return; }
                 Navigator.pop(ctx);
-                await DatabaseService.crearOperador(
-                    nombreCtrl.text.trim(), pinCtrl.text);
+                await DatabaseService.crearOperador(nombreCtrl.text.trim(), pinCtrl.text);
                 _cargar();
               },
               child: const Text('Crear'),
@@ -113,19 +98,16 @@ class _PantallaUsuariosState extends State<PantallaUsuarios> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Eliminar operador'),
-        content: Text('¿Eliminar a "${u.nombre}"?'),
+        content: Text('Eliminar a "${u.nombre}"?'),
         actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('Cancelar')),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancelar')),
           ElevatedButton(
             onPressed: () async {
               Navigator.pop(ctx);
               await DatabaseService.eliminarUsuario(u.id!);
               _cargar();
             },
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red[700]),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red[700]),
             child: const Text('Eliminar'),
           ),
         ],
@@ -136,9 +118,7 @@ class _PantallaUsuariosState extends State<PantallaUsuarios> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('👥 Gestión de Usuarios'),
-      ),
+      appBar: AppBar(title: const Text('Gestion de Usuarios')),
       body: _cargando
           ? const Center(child: CircularProgressIndicator())
           : _operadores.isEmpty
@@ -146,24 +126,18 @@ class _PantallaUsuariosState extends State<PantallaUsuarios> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('👤',
-                          style: TextStyle(fontSize: 64)),
+                      const Icon(Icons.people_outline, size: 80, color: Colors.grey),
                       const SizedBox(height: 16),
-                      const Text(
-                        'No hay operadores creados.\nAgrega uno con el botón +.',
-                        textAlign: TextAlign.center,
-                        style:
-                            TextStyle(fontSize: 18, color: Colors.grey),
-                      ),
+                      const Text('No hay operadores creados.\nAgrega uno con el boton +.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 18, color: Colors.grey)),
                       const SizedBox(height: 24),
                       ElevatedButton.icon(
                         onPressed: _mostrarDialogCrear,
                         icon: const Icon(Icons.add),
                         label: const Text('Crear primer operador'),
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 14),
-                        ),
+                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14)),
                       ),
                     ],
                   ),
@@ -179,22 +153,15 @@ class _PantallaUsuariosState extends State<PantallaUsuarios> {
                         leading: CircleAvatar(
                           backgroundColor: Colors.blueGrey,
                           radius: 26,
-                          child: Text(
-                            u.nombre[0].toUpperCase(),
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          child: Text(u.nombre[0].toUpperCase(),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
                         ),
                         title: Text(u.nombre,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17)),
-                        subtitle: const Text('Operador · Acceso estándar'),
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                        subtitle: const Text('Operador - Acceso estandar'),
                         trailing: IconButton(
-                          icon: const Icon(Icons.delete_outline,
-                              color: Colors.red),
+                          icon: const Icon(Icons.delete_outline, color: Colors.red),
                           onPressed: () => _eliminar(u),
                         ),
                       ),

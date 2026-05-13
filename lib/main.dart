@@ -6,18 +6,14 @@ import 'services/licencia_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
   ]);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-
-  // ⚠️ MODO DESARROLLO — cambiar devMode a false antes de exportar el APK final
-  const bool devMode = true;
-  final activada = devMode ? false : await LicenciaService.estaActivada();
-
+  const bool devMode = true; // cambiar a false antes de exportar
+  final activada = devMode ? true : await LicenciaService.estaActivada();
   runApp(BillarApp(licenciaActiva: activada));
 }
 
@@ -37,10 +33,7 @@ class BillarApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      // Si tiene licencia → login | Si no → activación
-      home: licenciaActiva
-          ? const PantallaLogin()
-          : const PantallaActivacion(),
+      home: licenciaActiva ? const PantallaLogin() : const PantallaActivacion(),
     );
   }
 }

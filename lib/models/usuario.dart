@@ -3,7 +3,7 @@ enum RolUsuario { superusuario, operador }
 class Usuario {
   final int? id;
   final String nombre;
-  final String pin; // PIN hasheado
+  final String pin;
   final RolUsuario rol;
 
   Usuario({

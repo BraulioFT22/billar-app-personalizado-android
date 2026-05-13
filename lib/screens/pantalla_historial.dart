@@ -21,10 +21,7 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
 
   Future<void> _cargar() async {
     final meses = await StorageService.cargarMesesDisponibles();
-    setState(() {
-      _meses = meses;
-      _cargando = false;
-    });
+    setState(() { _meses = meses; _cargando = false; });
   }
 
   void _verDetalle(Map<String, dynamic> mes) {
@@ -32,28 +29,21 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Row(children: [
-          const Text('📅 '),
-          Text(mes['mesAnio'] as String,
-              style: const TextStyle(fontWeight: FontWeight.bold)),
-        ]),
+        title: Text(mes['mesAnio'] as String,
+            style: const TextStyle(fontWeight: FontWeight.bold)),
         content: SizedBox(
           width: 420,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Encabezado
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Fecha',
-                      style: TextStyle(color: Colors.grey, fontSize: 13)),
-                  Text('Ganancia',
-                      style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  Text('Fecha', style: TextStyle(color: Colors.grey, fontSize: 13)),
+                  Text('Ganancia', style: TextStyle(color: Colors.grey, fontSize: 13)),
                 ],
               ),
               const Divider(),
-              // Días
               ConstrainedBox(
                 constraints: const BoxConstraints(maxHeight: 320),
                 child: SingleChildScrollView(
@@ -63,8 +53,7 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(d['fecha'].toString(),
-                              style: const TextStyle(fontSize: 15)),
+                          Text(d['fecha'].toString(), style: const TextStyle(fontSize: 15)),
                           Text(
                             '\$${(d['total'] as num).toDouble().toStringAsFixed(2)}',
                             style: const TextStyle(
@@ -87,9 +76,7 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
                   Text(
                     '\$${(mes['totalMes'] as double).toStringAsFixed(2)}',
                     style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.greenAccent),
+                        fontSize: 22, fontWeight: FontWeight.bold, color: Colors.greenAccent),
                   ),
                 ],
               ),
@@ -97,9 +84,7 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
           ),
         ),
         actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('Cerrar')),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cerrar')),
         ],
       ),
     );
@@ -124,9 +109,7 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('📁 Historial Mensual'),
-      ),
+      appBar: AppBar(title: const Text('Historial Mensual')),
       body: _cargando
           ? const Center(child: CircularProgressIndicator())
           : _meses.isEmpty
@@ -134,10 +117,10 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('📂', style: TextStyle(fontSize: 64)),
+                      Icon(Icons.folder_open, size: 80, color: Colors.grey),
                       SizedBox(height: 16),
                       Text(
-                        'No hay reportes aún.\nRealiza un cierre del día para generar el primero.',
+                        'No hay reportes aun.\nRealiza un cierre del dia para generar el primero.',
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 18, color: Colors.grey),
                       ),
@@ -149,33 +132,24 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
                   itemCount: _meses.length,
                   itemBuilder: (ctx, i) {
                     final mes = _meses[i];
-                    final dias =
-                        mes['dias'] as List<Map<String, dynamic>>;
+                    final dias = mes['dias'] as List<Map<String, dynamic>>;
                     return Card(
                       margin: const EdgeInsets.only(bottom: 14),
                       child: Padding(
                         padding: const EdgeInsets.all(16),
                         child: Row(
                           children: [
-                            const Text('📅',
-                                style: TextStyle(fontSize: 36)),
+                            const Icon(Icons.calendar_month, size: 40, color: Colors.greenAccent),
                             const SizedBox(width: 16),
                             Expanded(
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    mes['mesAnio'] as String,
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    '${dias.length} días trabajados',
-                                    style: const TextStyle(
-                                        color: Colors.grey),
-                                  ),
+                                  Text(mes['mesAnio'] as String,
+                                      style: const TextStyle(
+                                          fontSize: 18, fontWeight: FontWeight.bold)),
+                                  Text('${dias.length} dias trabajados',
+                                      style: const TextStyle(color: Colors.grey)),
                                   Text(
                                     'Total: \$${(mes['totalMes'] as double).toStringAsFixed(2)}',
                                     style: const TextStyle(
@@ -197,9 +171,7 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
                               icon: const Icon(Icons.download),
                               label: const Text('Descargar'),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color(0xFF2E7D32),
-                              ),
+                                  backgroundColor: const Color(0xFF2E7D32)),
                             ),
                           ],
                         ),
